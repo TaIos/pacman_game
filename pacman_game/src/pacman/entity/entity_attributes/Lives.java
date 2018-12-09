@@ -1,12 +1,14 @@
 package pacman.entity.entity_attributes;
 
+import pacman.entity.DefaultEntityValues;
+
 import java.util.Objects;
 
-public class Lives implements DefaultAttributeValues {
+public class Lives implements DefaultEntityValues {
     private Integer lives;
 
     public Lives() {
-        this(DEFAULT_LIVES);
+        this(DEFAULT_PACMAN_LIVES);
     }
 
     // TODO validate lives

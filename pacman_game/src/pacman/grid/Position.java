@@ -4,8 +4,7 @@ import java.util.Objects;
 
 // TODO validate input
 public class Position implements DefaultGridValues {
-    private Integer x;
-    private Integer y;
+    private int x, dx, y, dy;
 
     public Position() {
         this(X_DEFAULT, Y_DEFAULT);
@@ -14,6 +13,8 @@ public class Position implements DefaultGridValues {
     public Position(int x, int y) {
         this.x = x;
         this.y = y;
+        this.dx = DX_DEFAULT;
+        this.dy = DY_DEFAULT;
     }
 
     public int getX() {

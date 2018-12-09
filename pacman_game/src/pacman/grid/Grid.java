@@ -1,11 +1,12 @@
 package pacman.grid;
 
-import pacman.graphics.Image;
+import javax.swing.*;
 
-public class Grid implements DefaultGridValues {
+public class Grid extends JPanel implements DefaultGridValues {
     Integer width;
     Integer height;
-    Image backround;
+    MazeData maze;
+    int screenData[];
 
     public Grid() {
         this(WIDTH_DEFAULT, HEIGHT_DEFAULT);
@@ -14,5 +15,19 @@ public class Grid implements DefaultGridValues {
     public Grid(Integer width, Integer height) {
         this.width = width;
         this.height = height;
+        screenData = new int[width * height];
+        maze = new MazeData();
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public boolean noMorePoints() {
+        return true;
     }
 }
