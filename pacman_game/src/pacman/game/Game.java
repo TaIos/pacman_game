@@ -5,6 +5,7 @@ import pacman.entity.Pacman;
 import pacman.graphics.GraphicsController;
 import pacman.grid.Grid;
 
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
@@ -23,12 +24,18 @@ public class Game implements DefaultGameValues, ActionListener {
         for (int i = 0; i < DEFAULT_GHOST_CNT; i++)
             ghosts[i] = new Ghost();
 
+        loadImages();
+
         grid = new Grid();
 
         graphicsController = new GraphicsController(pacman, ghosts, grid);
 
         frame = new JFrame();
-        frame.setSize(grid.getWidth(), grid.getHeight());
+
+        // setting size
+        frame.setSize(new Dimension(grid.getWidth(), grid.getHeight()));
+        frame.setResizable(false);
+
         frame.add(graphicsController);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
@@ -36,23 +43,19 @@ public class Game implements DefaultGameValues, ActionListener {
         timer = new Timer(DEFAULT_DELAY_IN_SECONDS, this);
     }
 
-
     public void start() {
         graphicsController.drawScene();
-        try {
-            Thread.sleep(10000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        graphicsController.welcomeScreen();
         graphicsController.showMenu();
         tickComponent();
     }
 
-
     private void tickComponent() {
         while (true) {
+            try {
+                Thread.sleep(1000 / DEFAULT_FPS);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
 
             if (collision() && pacman.isDead()) {
                 lost();
@@ -101,6 +104,10 @@ public class Game implements DefaultGameValues, ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
+
+    }
+
+    private void loadImages() {
 
     }
 }

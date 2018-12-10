@@ -24,6 +24,7 @@ public class GraphicsController extends JPanel implements DefaultGraphicsValues 
         this.ghosts = ghosts;
         this.grid = grid;
 
+        // load backround image
         try {
             File pathBackround = new File(BASE_IMAGE_PATH + File.separator + "background1.jpg");
             backround = ImageIO.read(pathBackround);
@@ -31,21 +32,28 @@ public class GraphicsController extends JPanel implements DefaultGraphicsValues 
             e.printStackTrace();
         }
 
-        if (backround == null)
-            System.out.println("OH NO");
-    }
-
-    public void drawScene() {
+        /*
+        Dimension dim = new Dimension(400, 400);
+        setSize(dim);
+        setMaximumSize(dim);
+        setPreferredSize(dim);
+        */
     }
 
     @Override
     protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
+        super.paintComponent(g); // erase whatever is currently drawn (JComponent superclass)
+        Graphics2D g2d = (Graphics2D) g;
+
         g.drawImage(backround, 0, 0, null);
+        drawMaze(g2d);
     }
 
+    public void drawScene() {
+        repaint();
+    }
 
-    public void welcomeScreen() {
+    private void drawMaze(Graphics2D g2d) {
 
     }
 
