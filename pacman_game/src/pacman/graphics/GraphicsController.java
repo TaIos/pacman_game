@@ -62,7 +62,6 @@ public class GraphicsController extends JPanel implements DefaultGraphicsValues 
                 x = j * blkSize;
                 g2d.setColor(DEFAULT_WALL_COLOR);
 
-                System.out.println("(" + x + "," + y + ")");
                 if ((data[i][j] & 1) != 0) // left wall
                     g2d.drawLine(x, y, x, y + blkSize - 1);
 
