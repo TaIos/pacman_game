@@ -5,6 +5,7 @@ import java.util.Objects;
 // TODO validate input
 public class Position implements DefaultGridValues {
     private int x, dx, y, dy;
+    boolean left, right, down, up;
 
     public Position() {
         this(X_DEFAULT, Y_DEFAULT);
@@ -15,6 +16,7 @@ public class Position implements DefaultGridValues {
         this.y = y;
         this.dx = DX_DEFAULT;
         this.dy = DY_DEFAULT;
+        left = right = down = up = false;
     }
 
     public int getX() {
@@ -31,6 +33,46 @@ public class Position implements DefaultGridValues {
 
     public void setY(int y) {
         this.y = y;
+    }
+
+    public boolean isGoingLeft() {
+        return left;
+    }
+
+    public boolean isGoingRight() {
+        return right;
+    }
+
+    public boolean isGoingUp() {
+        return up;
+    }
+
+    public boolean isGoingDown() {
+        return down;
+    }
+
+    public void setGoingLeft(boolean left) {
+        this.left = left;
+        right = up = down = false;
+    }
+
+    public void setGoingRight(boolean right) {
+        this.right = right;
+        left = up = down = false;
+    }
+
+    public void setGoingDown(boolean down) {
+        this.down = down;
+        left = right = up = false;
+    }
+
+    public void setUp(boolean up) {
+        this.up = up;
+        left = right = down = false;
+    }
+
+    public void setStop() {
+        left = right = up = down = false;
     }
 
     @Override

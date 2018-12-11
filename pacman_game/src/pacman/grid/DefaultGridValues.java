@@ -12,4 +12,8 @@ public interface DefaultGridValues {
     int DEFAULT_HEIGHT_PIXEL = 480;
     int DEFAULT_WIDTH_BLOCK = DEFAULT_WIDTH_PIXEL / DEFAULT_BLOCK_SIZE;
     int DEFAULT_HEIGHT_BLOCK = DEFAULT_HEIGHT_PIXEL / DEFAULT_BLOCK_SIZE;
+    int LEFT = 3;
+    int RIGHT = 4;
+    int UP = 2;
+    int DOWN = 1;
 }
