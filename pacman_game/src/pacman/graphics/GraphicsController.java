@@ -94,7 +94,7 @@ public class GraphicsController extends JPanel implements DefaultGraphicsValues,
     private void showScore(Graphics2D g2d) {
         String lives, points;
         lives = "Lives: " + pacman.getLives();
-        points = "Score: " + grid.getScore();
+        points = "Score: " + pacman.getScore();
 
         g2d.setFont(DEFAULT_FONT);
         g2d.setColor(LIVES_COLOR);
