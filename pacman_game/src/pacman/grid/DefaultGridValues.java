@@ -1,10 +1,13 @@
 package pacman.grid;
 
 public interface DefaultGridValues {
-   Integer X_DEFAULT = 1;
-   Integer Y_DEFAULT = 1;
-   Integer DX_DEFAULT = 0;
-   Integer DY_DEFAULT = 0;
-   Integer WIDTH_DEFAULT = 400;
-   Integer HEIGHT_DEFAULT = 400;
+    int X_DEFAULT = 1;
+    int Y_DEFAULT = 1;
+    int DX_DEFAULT = 0;
+    int DY_DEFAULT = 0;
+    int DEFAULT_BLOCK_SIZE = 32;
+    int DEFAULT_WIDTH_PIXEL = 480;
+    int DEFAULT_HEIGHT_PIXEL = 480;
+    int DEFAULT_WIDTH_BLOCK = DEFAULT_WIDTH_PIXEL / DEFAULT_BLOCK_SIZE;
+    int DEFAULT_HEIGHT_BLOCK = DEFAULT_HEIGHT_PIXEL / DEFAULT_BLOCK_SIZE;
 }

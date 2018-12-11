@@ -7,5 +7,6 @@ public interface DefaultGameValues {
     int DEFAULT_SCORE = 0;
     int DEFAULT_DELAY_IN_SECONDS = 40;
     int DEFAULT_FPS = 60;
+    int TOP_BAR_HEIGHT_PIXEL = 37;
     Font DEFAULT_FONT = new Font("Helvetica", Font.BOLD, 14);
 }

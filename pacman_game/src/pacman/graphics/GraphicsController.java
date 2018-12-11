@@ -31,29 +31,66 @@ public class GraphicsController extends JPanel implements DefaultGraphicsValues 
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
 
-        /*
-        Dimension dim = new Dimension(400, 400);
-        setSize(dim);
-        setMaximumSize(dim);
-        setPreferredSize(dim);
-        */
+    /**
+     * Forces repainting of the screen
+     */
+    public void drawScene() {
+        repaint();
     }
 
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g); // erase whatever is currently drawn (JComponent superclass)
-        Graphics2D g2d = (Graphics2D) g;
-
         g.drawImage(backround, 0, 0, null);
+        Graphics2D g2d = (Graphics2D) g;
         drawMaze(g2d);
-    }
-
-    public void drawScene() {
-        repaint();
+        animate(g2d);
+        showScore(g2d);
     }
 
     private void drawMaze(Graphics2D g2d) {
+        final int blkSize = grid.getBlockSize();
+        final int[][] data = grid.getData();
+        g2d.setStroke(new BasicStroke(DEFAULT_WALL_WIDTH));
+
+        int x, y;
+        for (int i = 0; i < grid.getHeightInBlocks(); i++) {
+            y = i * blkSize;
+            for (int j = 0; j < grid.getWidthInBlocks(); j++) {
+                x = j * blkSize;
+                g2d.setColor(DEFAULT_WALL_COLOR);
+
+                System.out.println("(" + x + "," + y + ")");
+                if ((data[i][j] & 1) != 0) // left wall
+                    g2d.drawLine(x, y, x, y + blkSize - 1);
+
+                if ((data[i][j] & 2) != 0) // top wall
+                    g2d.drawLine(x, y, x + blkSize - 1, y);
+
+                if ((data[i][j] & 4) != 0) // right wall
+                    g2d.drawLine(x + blkSize - 1, y, x + blkSize - 1, y + blkSize - 1);
+
+                if ((data[i][j] & 8) != 0) // bottom wall
+                    g2d.drawLine(x, y + blkSize - 1, x + blkSize - 1, y + blkSize - 1);
+
+                if ((data[i][j] & 16) != 0) { // point
+                    g2d.setColor(DEFAULT_DOT_COLOR);
+                    //g2d.fillRect(x + blkSize / 2, y + blkSize / 2, DEFAULT_CIRCLE_DIAMETER, DEFAULT_CIRCLE_DIAMETER);
+                    g2d.fillArc(x + blkSize / 2, y + blkSize / 2, DEFAULT_CIRCLE_DIAMETER, DEFAULT_CIRCLE_DIAMETER, 0, 360);
+                }
+
+            }
+        }
+
+    }
+
+    private void animate(Graphics2D g2d) {
+
+    }
+
+    private void showScore(Graphics2D g2d) {
 
     }
 

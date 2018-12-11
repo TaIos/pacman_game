@@ -33,7 +33,7 @@ public class Game implements DefaultGameValues, ActionListener {
         frame = new JFrame();
 
         // setting size
-        frame.setSize(new Dimension(grid.getWidth(), grid.getHeight()));
+        frame.setSize(new Dimension(grid.getWidthInPixels(), grid.getHeightInPixels() + TOP_BAR_HEIGHT_PIXEL));
         frame.setResizable(false);
 
         frame.add(graphicsController);
@@ -44,7 +44,6 @@ public class Game implements DefaultGameValues, ActionListener {
     }
 
     public void start() {
-        graphicsController.drawScene();
         graphicsController.showMenu();
         tickComponent();
     }

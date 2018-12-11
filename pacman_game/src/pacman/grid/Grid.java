@@ -1,33 +1,49 @@
 package pacman.grid;
 
 import javax.swing.*;
+import javax.xml.bind.annotation.XmlType;
 
 public class Grid extends JPanel implements DefaultGridValues {
-    Integer width;
-    Integer height;
+    int width, height, blockSize;
     MazeData maze;
-    int screenData[];
 
     public Grid() {
-        this(WIDTH_DEFAULT, HEIGHT_DEFAULT);
+        this(DEFAULT_WIDTH_PIXEL, DefaultGridValues.DEFAULT_HEIGHT_PIXEL, DEFAULT_BLOCK_SIZE);
     }
 
-    public Grid(Integer width, Integer height) {
+    public Grid(int width, int height, int blockSize) {
         this.width = width;
         this.height = height;
-        screenData = new int[width * height];
+        this.blockSize = blockSize;
         maze = new MazeData();
-    }
-
-    public int getWidth() {
-        return width;
-    }
-
-    public int getHeight() {
-        return height;
     }
 
     public boolean noMorePoints() {
         return true;
     }
+
+    public int getWidthInPixels() {
+        return width;
+    }
+
+    public int getHeightInPixels() {
+        return height;
+    }
+
+    public int getWidthInBlocks() {
+        return width / DEFAULT_BLOCK_SIZE;
+    }
+
+    public int getHeightInBlocks() {
+        return height / DEFAULT_BLOCK_SIZE;
+    }
+
+    public int getBlockSize() {
+        return DEFAULT_BLOCK_SIZE;
+    }
+
+    public int[][] getData() {
+        return maze.getData();
+    }
+
 }
