@@ -1,5 +1,7 @@
 package pacman.grid;
 
+import java.awt.*;
+
 public interface DefaultGridValues {
     int X_DEFAULT = 1;
     int Y_DEFAULT = 1;

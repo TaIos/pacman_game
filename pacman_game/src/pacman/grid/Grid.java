@@ -18,8 +18,12 @@ public class Grid extends JPanel implements DefaultGridValues {
         maze = new MazeData();
     }
 
+    public int getScore() {
+        return 1;
+    }
+
     public boolean noMorePoints() {
-        return true;
+        return getScore() < 1;
     }
 
     public int getWidthInPixels() {

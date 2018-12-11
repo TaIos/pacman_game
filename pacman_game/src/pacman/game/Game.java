@@ -9,6 +9,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
+import javax.swing.border.BevelBorder;
 
 public class Game implements DefaultGameValues, ActionListener {
     private Timer timer;
@@ -19,28 +20,46 @@ public class Game implements DefaultGameValues, ActionListener {
     private JFrame frame;
 
     public Game() {
-        pacman = new Pacman();
-        ghosts = new Ghost[DEFAULT_GHOST_CNT];
-        for (int i = 0; i < DEFAULT_GHOST_CNT; i++)
-            ghosts[i] = new Ghost();
-
         loadImages();
+        initGrid();
+        initGhosts();
+        initPacman();
+        initGraphics();
+        initTimer();
+    }
 
+    private void initTimer() {
+        timer = new Timer(DEFAULT_DELAY_IN_SECONDS, this);
+    }
+
+    private void initGrid() {
         grid = new Grid();
+    }
 
-        graphicsController = new GraphicsController(pacman, ghosts, grid);
+    private void initGraphics() {
 
         frame = new JFrame();
+        frame.setLayout(new BorderLayout());
+        graphicsController = new GraphicsController(pacman, ghosts, grid);
 
         // setting size
-        frame.setSize(new Dimension(grid.getWidthInPixels(), grid.getHeightInPixels() + TOP_BAR_HEIGHT_PIXEL));
+        frame.setSize(new Dimension(grid.getWidthInPixels(), grid.getHeightInPixels() +
+                TOP_BAR_HEIGHT_PIXEL + INFO_BAR_PIXEL_HEIGHT));
         frame.setResizable(false);
 
         frame.add(graphicsController);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
+    }
 
-        timer = new Timer(DEFAULT_DELAY_IN_SECONDS, this);
+    private void initPacman() {
+        pacman = new Pacman();
+    }
+
+    private void initGhosts() {
+        ghosts = new Ghost[DEFAULT_GHOST_CNT];
+        for (int i = 0; i < DEFAULT_GHOST_CNT; i++)
+            ghosts[i] = new Ghost();
     }
 
     public void start() {

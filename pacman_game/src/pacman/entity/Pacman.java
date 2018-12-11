@@ -33,10 +33,14 @@ public class Pacman implements DefaultEntityValues {
     }
 
     public boolean isAlive() {
-        return lives.getLives() > 0;
+        return getLives() > 0;
     }
 
     public boolean isDead() {
         return !isAlive();
+    }
+
+    public int getLives() {
+        return lives.getLives();
     }
 }

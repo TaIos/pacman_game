@@ -2,6 +2,8 @@ package pacman.graphics;
 
 import pacman.entity.Ghost;
 import pacman.entity.Pacman;
+import pacman.entity.entity_attributes.Lives;
+import pacman.game.DefaultGameValues;
 import pacman.grid.Grid;
 
 import java.awt.*;
@@ -11,7 +13,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
-public class GraphicsController extends JPanel implements DefaultGraphicsValues {
+public class GraphicsController extends JPanel implements DefaultGraphicsValues, DefaultGameValues {
     private final Pacman pacman;
     private final Ghost ghosts[];
     private final Grid grid;
@@ -90,11 +92,19 @@ public class GraphicsController extends JPanel implements DefaultGraphicsValues 
     }
 
     private void showScore(Graphics2D g2d) {
+        String lives, points;
+        lives = "Lives: " + pacman.getLives();
+        points = "Score: " + grid.getScore();
 
+        g2d.setFont(DEFAULT_FONT);
+        g2d.setColor(LIVES_COLOR);
+        g2d.drawString(lives, 0, grid.getHeightInPixels() + TOP_BAR_HEIGHT_PIXEL / 2);
+
+        g2d.drawString(points, grid.getWidthInPixels() - g2d.getFontMetrics().stringWidth(points),
+                grid.getHeightInPixels() + TOP_BAR_HEIGHT_PIXEL / 2);
     }
 
     public void showMenu() {
 
     }
-
 }
