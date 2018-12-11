@@ -6,18 +6,17 @@ import pacman.graphics.GraphicsController;
 import pacman.grid.Grid;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import javax.swing.*;
-import javax.swing.border.BevelBorder;
 
-public class Game implements DefaultGameValues, ActionListener {
-    private Timer timer;
+public class Game implements DefaultGameValues, KeyListener {
     private Pacman pacman;
     private Ghost[] ghosts;
     private Grid grid;
     private GraphicsController graphicsController;
     private JFrame frame;
+    private boolean pauseFlag = false;
 
     public Game() {
         loadImages();
@@ -25,41 +24,6 @@ public class Game implements DefaultGameValues, ActionListener {
         initGhosts();
         initPacman();
         initGraphics();
-        initTimer();
-    }
-
-    private void initTimer() {
-        timer = new Timer(DEFAULT_DELAY_IN_SECONDS, this);
-    }
-
-    private void initGrid() {
-        grid = new Grid();
-    }
-
-    private void initGraphics() {
-
-        frame = new JFrame();
-        frame.setLayout(new BorderLayout());
-        graphicsController = new GraphicsController(pacman, ghosts, grid);
-
-        // setting size
-        frame.setSize(new Dimension(grid.getWidthInPixels(), grid.getHeightInPixels() +
-                TOP_BAR_HEIGHT_PIXEL + INFO_BAR_PIXEL_HEIGHT));
-        frame.setResizable(false);
-
-        frame.add(graphicsController);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setVisible(true);
-    }
-
-    private void initPacman() {
-        pacman = new Pacman();
-    }
-
-    private void initGhosts() {
-        ghosts = new Ghost[DEFAULT_GHOST_CNT];
-        for (int i = 0; i < DEFAULT_GHOST_CNT; i++)
-            ghosts[i] = new Ghost();
     }
 
     public void start() {
@@ -93,6 +57,22 @@ public class Game implements DefaultGameValues, ActionListener {
         }
     }
 
+    private void won() {
+
+    }
+
+    private void lost() {
+
+    }
+
+    private void pause() {
+        pauseFlag = !pauseFlag;
+    }
+
+    void resetGrid() {
+
+    }
+
     private void movePacman() {
 
     }
@@ -102,30 +82,81 @@ public class Game implements DefaultGameValues, ActionListener {
             g.move();
     }
 
-    void resetGrid() {
-
-    }
-
     boolean collision() {
 
         return true;
     }
 
-
-    private void won() {
-
+    private void initGrid() {
+        grid = new Grid();
     }
 
-    private void lost() {
+    private void initGraphics() {
+
+        frame = new JFrame();
+        frame.setLayout(new BorderLayout());
+        graphicsController = new GraphicsController(pacman, ghosts, grid);
+
+        // setting size
+        frame.setSize(new Dimension(grid.getWidthInPixels(), grid.getHeightInPixels() +
+                TOP_BAR_HEIGHT_PIXEL + INFO_BAR_PIXEL_HEIGHT));
+        frame.setResizable(false);
+
+        frame.addKeyListener(this);
+
+        frame.add(graphicsController);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setVisible(true);
+    }
+
+    private void initPacman() {
+        pacman = new Pacman();
+    }
+
+    private void initGhosts() {
+        ghosts = new Ghost[DEFAULT_GHOST_CNT];
+        for (int i = 0; i < DEFAULT_GHOST_CNT; i++)
+            ghosts[i] = new Ghost();
+    }
+
+    private void loadImages() {
 
     }
 
     @Override
-    public void actionPerformed(ActionEvent actionEvent) {
+    public void keyPressed(KeyEvent keyEvent) {
+        int key = keyEvent.getKeyCode();
 
+        switch (key) {
+            case KeyEvent.VK_LEFT:
+            case KeyEvent.VK_A:
+                pacman.getPosition().setGoingLeft();
+                break;
+            case KeyEvent.VK_RIGHT:
+            case KeyEvent.VK_D:
+                pacman.getPosition().setGoingRight();
+                break;
+            case KeyEvent.VK_UP:
+            case KeyEvent.VK_W:
+                pacman.getPosition().setGoindUp();
+                break;
+            case KeyEvent.VK_DOWN:
+            case KeyEvent.VK_S:
+                pacman.getPosition().setGoingDown();
+                break;
+            case KeyEvent.VK_PAUSE:
+            case KeyEvent.VK_ESCAPE:
+                pause();
+                break;
+        }
     }
 
-    private void loadImages() {
+    @Override
+    public void keyReleased(KeyEvent keyEvent) {
+    }
+
+    @Override
+    public void keyTyped(KeyEvent keyEvent) {
 
     }
 }

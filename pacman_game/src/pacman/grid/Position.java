@@ -51,23 +51,23 @@ public class Position implements DefaultGridValues {
         return down;
     }
 
-    public void setGoingLeft(boolean left) {
-        this.left = left;
+    public void setGoingLeft() {
+        left = true;
         right = up = down = false;
     }
 
-    public void setGoingRight(boolean right) {
-        this.right = right;
+    public void setGoingRight() {
+        right = true;
         left = up = down = false;
     }
 
-    public void setGoingDown(boolean down) {
-        this.down = down;
+    public void setGoingDown() {
+        down = true;
         left = right = up = false;
     }
 
-    public void setUp(boolean up) {
-        this.up = up;
+    public void setGoindUp() {
+        up = true;
         left = right = down = false;
     }
 

@@ -26,10 +26,15 @@ public class GraphicsController extends JPanel implements DefaultGraphicsValues,
         this.ghosts = ghosts;
         this.grid = grid;
 
+        loadImages();
+    }
+
+    private void loadImages() {
+
         // load backround image
         try {
-            File pathBackround = new File(BASE_IMAGE_PATH + File.separator + "background1.jpg");
-            backround = ImageIO.read(pathBackround);
+            File pathBackground = new File(BASE_IMAGE_PATH + File.separator + "background1.jpg");
+            backround = ImageIO.read(pathBackground);
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -53,4 +53,8 @@ public class Pacman extends AbstractEntity
     public void incScore() {
         score++;
     }
+
+    public Position getPosition() {
+        return position;
+    }
 }
