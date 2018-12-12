@@ -53,7 +53,8 @@ public class GraphicsController extends JPanel implements DefaultGraphicsValues,
         g.drawImage(backround, 0, 0, null);
         Graphics2D g2d = (Graphics2D) g;
         drawMaze(g2d);
-        animate(g2d);
+        drawPacman(g2d);
+        drawGhosts(g2d);
         showScore(g2d);
     }
 
@@ -92,7 +93,11 @@ public class GraphicsController extends JPanel implements DefaultGraphicsValues,
 
     }
 
-    private void animate(Graphics2D g2d) {
+    private void drawPacman(Graphics2D g2d) {
+
+    }
+
+    private void drawGhosts(Graphics2D g2d) {
 
     }
 
