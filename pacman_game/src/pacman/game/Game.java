@@ -4,6 +4,7 @@ import pacman.entity.Ghost;
 import pacman.entity.Pacman;
 import pacman.graphics.GraphicsController;
 import pacman.grid.Grid;
+import pacman.grid.Position;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -51,7 +52,7 @@ public class Game implements DefaultGameValues, KeyListener {
             }
 
             movePacman();
-            moveGhotsts();
+            //moveGhotsts();
 
             graphicsController.drawScene();
         }
@@ -74,6 +75,33 @@ public class Game implements DefaultGameValues, KeyListener {
     }
 
     private void movePacman() {
+        Position pos = pacman.getPosition();
+        int data[][] = grid.getData(), x, y, block, idx, idy;
+        x = pos.getX();
+        y = pos.getY();
+        idx = y / grid.getBlockSize();
+        idy = x / grid.getBlockSize();
+        block = data[idx][idy];
+
+        // take point if there is any
+        if ((block & 16) != 0) {
+            data[idx][idy] = (block & 15);
+            pacman.incScore();
+        }
+
+        if (pos.isGoingLeft() && ((block & 1) == 0)) {
+            pos.setX(x - 32);
+            System.out.println("LEFT");
+        } else if (pos.isGoingUp() && ((block & 2) == 0)) {
+            System.out.println("UP");
+            pos.setY(y - 32);
+        } else if (pos.isGoingRight() && ((block & 4) == 0)) {
+            System.out.println("RIGHT");
+            pos.setX(x + 32);
+        } else if (pos.isGoingDown() && ((block & 8) == 0)) {
+            System.out.println("DOWN");
+            pos.setY(y + 32);
+        }
 
     }
 
@@ -131,18 +159,22 @@ public class Game implements DefaultGameValues, KeyListener {
         switch (key) {
             case KeyEvent.VK_LEFT:
             case KeyEvent.VK_A:
+            case KeyEvent.VK_H:
                 pacman.getPosition().setGoingLeft();
                 break;
             case KeyEvent.VK_RIGHT:
             case KeyEvent.VK_D:
+            case KeyEvent.VK_L:
                 pacman.getPosition().setGoingRight();
                 break;
             case KeyEvent.VK_UP:
             case KeyEvent.VK_W:
+            case KeyEvent.VK_K:
                 pacman.getPosition().setGoindUp();
                 break;
             case KeyEvent.VK_DOWN:
             case KeyEvent.VK_S:
+            case KeyEvent.VK_J:
                 pacman.getPosition().setGoingDown();
                 break;
             case KeyEvent.VK_PAUSE:

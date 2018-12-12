@@ -3,8 +3,8 @@ package pacman.grid;
 import java.awt.*;
 
 public interface DefaultGridValues {
-    int X_DEFAULT = 1;
-    int Y_DEFAULT = 1;
+    int X_DEFAULT = 0;
+    int Y_DEFAULT = 0;
     int DX_DEFAULT = 0;
     int DY_DEFAULT = 0;
     int DEFAULT_BLOCK_SIZE = 32;

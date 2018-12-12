@@ -5,6 +5,7 @@ import java.util.Objects;
 // TODO validate input
 public class Position implements DefaultGridValues {
     private int x, dx, y, dy;
+    private short delta;
     boolean left, right, down, up;
 
     public Position() {
