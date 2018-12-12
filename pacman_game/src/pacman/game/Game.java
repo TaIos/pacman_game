@@ -114,9 +114,10 @@ public class Game implements DefaultGameValues, KeyListener {
     }
 
     private void initGhosts() {
-        ghosts = new Ghost[DEFAULT_GHOST_CNT];
-        for (int i = 0; i < DEFAULT_GHOST_CNT; i++)
-            ghosts[i] = new Ghost();
+        // create 4 ghosts
+        ghosts = new Ghost[4];
+
+        //ghosts[0].ge
     }
 
     private void loadImages() {

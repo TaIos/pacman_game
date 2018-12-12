@@ -94,7 +94,11 @@ public class GraphicsController extends JPanel implements DefaultGraphicsValues,
     }
 
     private void drawPacman(Graphics2D g2d) {
-
+        Image imPc = pacman.getImage();
+        int x, y;
+        x = pacman.getPosition().getX();
+        y = pacman.getPosition().getY();
+        g2d.drawImage(imPc, x, y, null);
     }
 
     private void drawGhosts(Graphics2D g2d) {
