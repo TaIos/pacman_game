@@ -11,6 +11,6 @@ public interface DefaultGraphicsValues {
     int DEFAULT_CIRCLE_DIAMETER = 5;
     int DEFAULT_WALL_WIDTH = 4;
     String BASE_IMAGE_PATH = System.getProperty("user.dir") + File.separator
-            + "pjv_semestral_work_saframa6" + File.separator + "src" + File.separator + "pacman" + File.separator
+            + "src" + File.separator + "pacman" + File.separator
             + "graphics" + File.separator + "Files" + File.separator + "images" + File.separator + "refactored";
 }
