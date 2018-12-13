@@ -5,6 +5,7 @@ import pacman.entity.Pacman;
 import pacman.graphics.GraphicsController;
 import pacman.grid.Grid;
 import pacman.grid.Position;
+import sun.java2d.loops.GeneralRenderer;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -35,7 +36,8 @@ public class Game implements DefaultGameValues, KeyListener {
     private void tickComponent() {
         while (true) {
             try {
-                Thread.sleep(1000 / DEFAULT_FPS);
+                //Thread.sleep(1000 / DEFAULT_FPS);
+                Thread.sleep(200);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -75,34 +77,79 @@ public class Game implements DefaultGameValues, KeyListener {
     }
 
     private void movePacman() {
-        Position pos = pacman.getPosition();
-        int data[][] = grid.getData(), x, y, block, idx, idy;
-        x = pos.getX();
-        y = pos.getY();
-        idx = y / grid.getBlockSize();
-        idy = x / grid.getBlockSize();
-        block = data[idx][idy];
+        int data[][], x, y, blockSize,
+                blockLeft, blockRight, blockTop, blockDown;
 
-        // take point if there is any
-        if ((block & 16) != 0) {
-            data[idx][idy] = (block & 15);
+        blockSize = grid.getBlockSize();
+        Position pos = pacman.getPosition();
+        data = grid.getData();
+        x = pacman.getPosition().getX();
+        y = pacman.getPosition().getY();
+
+        /*
+        int a, b, c, d, e, f, g;
+        a = (x + blockSize / 2) / blockSize;
+        c = (x + blockSize / 2) / blockSize;
+        d = (x + blockSize) / blockSize;
+
+        e = (y + blockSize / 2) / blockSize;
+        f = (y + blockSize / 2) / blockSize;
+        g = (x + blockSize / 2) / blockSize;
+
+        System.out.println("blockLeft " + a + ", " + c);
+        System.out.println("blockRight " + a + ", " + d);
+        System.out.println("blockTop " + e + ", " + g);
+        System.out.println("blockDown " + f + ", " + g);
+
+        blockLeft = data[a][c];
+        blockRight = data[a][d];
+        blockTop = data[e][g];
+        blockDown = data[f][g];
+        */
+
+        blockDown = blockLeft = blockTop = blockRight = data[y / blockSize][x / blockSize];
+
+
+        if ((blockLeft & 16) != 0) {
+            data[y / blockSize][x / blockSize] = (blockLeft & 15);
             pacman.incScore();
         }
 
-        if (pos.isGoingLeft() && ((block & 1) == 0)) {
-            pos.setX(x - 32);
-            System.out.println("LEFT");
-        } else if (pos.isGoingUp() && ((block & 2) == 0)) {
-            System.out.println("UP");
-            pos.setY(y - 32);
-        } else if (pos.isGoingRight() && ((block & 4) == 0)) {
-            System.out.println("RIGHT");
-            pos.setX(x + 32);
-        } else if (pos.isGoingDown() && ((block & 8) == 0)) {
-            System.out.println("DOWN");
-            pos.setY(y + 32);
+        /*
+        // take point if there is any
+        if ((blockLeft & 16) != 0) {
+            data[a][c] = (blockLeft & 15);
+            pacman.incScore();
         }
+        if ((blockRight & 16) != 0) {
+            data[a][d] = (blockRight & 15);
+            pacman.incScore();
+        }
+        if ((blockTop & 16) != 0) {
+            data[e][g] = (blockTop & 15);
+            pacman.incScore();
+        }
+        if ((blockDown & 16) != 0) {
+            data[f][g] = (blockDown & 15);
+            pacman.incScore();
+        }
+        */
 
+        int delta = 32;
+
+        if (pos.isGoingLeft()) {
+            if ((blockLeft & 1) == 0)
+                pos.setX(x - delta);
+        } else if (pos.isGoingUp()) {
+            if ((blockTop & 2) == 0)
+                pos.setY(y - delta);
+        } else if (pos.isGoingRight()) {
+            if ((blockRight & 4) == 0)
+                pos.setX(x + delta);
+        } else if (pos.isGoingDown()) {
+            if ((blockDown & 8) == 0)
+                pos.setY(y + delta);
+        }
     }
 
     private void moveGhotsts() {
