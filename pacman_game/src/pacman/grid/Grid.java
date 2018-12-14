@@ -26,7 +26,14 @@ public class Grid extends JPanel implements DefaultGridValues {
     }
 
     public int getScore() {
-        return 1;
+        int sum = 0;
+        int data[][] = maze.getData();
+        for (int i = 0; i < getHeightInBlocks(); i++)
+            for (int j = 0; j < getWidthInBlocks(); j++) {
+                if ((data[i][j] & 16) != 0)
+                    sum++;
+            }
+        return sum;
     }
 
     public boolean noMorePoints() {

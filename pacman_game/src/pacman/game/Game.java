@@ -4,6 +4,7 @@ import pacman.entity.Ghost;
 import pacman.entity.Pacman;
 import pacman.graphics.GraphicsController;
 import pacman.grid.Grid;
+import pacman.grid.MazeMaps.EmptyMaze;
 import pacman.grid.MazeMaps.PJVMaze;
 import pacman.grid.Position;
 import sun.awt.windows.ThemeReader;
@@ -64,7 +65,7 @@ public class Game implements DefaultGameValues, KeyListener {
     }
 
     private void won() {
-
+        System.out.println("You have won the game!");
     }
 
     private void lost() {
@@ -147,6 +148,7 @@ public class Game implements DefaultGameValues, KeyListener {
 
     private void initGrid() {
         grid = new Grid(new PJVMaze());
+        grid = new Grid(new EmptyMaze());
     }
 
     private void initGraphics() {
