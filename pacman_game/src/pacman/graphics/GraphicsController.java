@@ -2,7 +2,6 @@ package pacman.graphics;
 
 import pacman.entity.Ghost;
 import pacman.entity.Pacman;
-import pacman.entity.entity_attributes.Lives;
 import pacman.game.DefaultGameValues;
 import pacman.grid.Grid;
 

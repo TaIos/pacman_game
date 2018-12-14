@@ -1,7 +1,6 @@
 package pacman.entity;
 
 
-import pacman.entity.entity_attributes.Lives;
 import pacman.grid.Position;
 
 import javax.imageio.ImageIO;
@@ -14,11 +13,11 @@ public class Pacman extends AbstractEntity
     private Image pacmLeftIm, pacmRightIm, pacmUpIm, pacmDownIm;
 
     private Position position;
-    private Lives lives;
+    private int lives;
     private int score;
 
     public Pacman() {
-        lives = new Lives(DEFAULT_PACMAN_LIVES);
+        lives = DEFAULT_PACMAN_LIVES;
         speed = DEFAULT_PACMAN_SPEED;
         position = new Position();
         score = 0;
@@ -63,7 +62,7 @@ public class Pacman extends AbstractEntity
     }
 
     public int getLives() {
-        return lives.getLives();
+        return lives;
     }
 
     public int getScore() {
@@ -86,5 +85,13 @@ public class Pacman extends AbstractEntity
         if (position.isGoingUp())
             return pacmUpIm;
         return pacmRightIm;
+    }
+
+    public void setLives(int lives) {
+        this.lives = lives;
+    }
+
+    public void setPosition(Position position) {
+        this.position = position;
     }
 }

@@ -46,11 +46,13 @@ public class Game implements DefaultGameValues, KeyListener {
                 e.printStackTrace();
             }
 
-            if (collision() && pacman.isDead()) {
-                lost();
-                break;
-            } else
-                resetGrid();
+            if (collision()) {
+                if (pacman.isDead()) {
+                    lost();
+                    break;
+                } else
+                    resetGrid();
+            }
 
             if (grid.noMorePoints() && pacman.isAlive()) {
                 won();
@@ -77,7 +79,9 @@ public class Game implements DefaultGameValues, KeyListener {
     }
 
     void resetGrid() {
-
+        initFlags();
+        initGhosts();
+        pacman.setPosition(new Position());
     }
 
     private void movePacman() {
@@ -143,7 +147,7 @@ public class Game implements DefaultGameValues, KeyListener {
 
     boolean collision() {
 
-        return true;
+        return false;
     }
 
     private void initGrid() {
