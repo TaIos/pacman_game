@@ -4,6 +4,7 @@ import pacman.entity.Ghost;
 import pacman.entity.Pacman;
 import pacman.graphics.GraphicsController;
 import pacman.grid.Grid;
+import pacman.grid.MazeMaps.PJVMaze;
 import pacman.grid.Position;
 import sun.awt.windows.ThemeReader;
 import sun.java2d.loops.GeneralRenderer;
@@ -145,7 +146,7 @@ public class Game implements DefaultGameValues, KeyListener {
     }
 
     private void initGrid() {
-        grid = new Grid();
+        grid = new Grid(new PJVMaze());
     }
 
     private void initGraphics() {
@@ -184,7 +185,6 @@ public class Game implements DefaultGameValues, KeyListener {
     private void initFlags() {
         pauseFlag = leftKey = rightKey = upKey = downKey = false;
     }
-
 
     @Override
     public void keyPressed(KeyEvent keyEvent) {
