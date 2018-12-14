@@ -22,7 +22,7 @@ public class Ghost extends AbstractEntity {
     }
 
     @Override
-    protected Image getImage() {
+    public Image getImage() {
         return image;
     }
 }

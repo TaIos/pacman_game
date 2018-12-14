@@ -1,11 +1,10 @@
 package pacman.grid;
 
 import javax.swing.*;
-import javax.xml.bind.annotation.XmlType;
 
 public class Grid extends JPanel implements DefaultGridValues {
     int width, height, blockSize;
-    MazeData maze;
+    DefaultMaze maze;
 
     public Grid() {
         this(DEFAULT_WIDTH_PIXEL, DefaultGridValues.DEFAULT_HEIGHT_PIXEL, DEFAULT_BLOCK_SIZE);
@@ -15,7 +14,7 @@ public class Grid extends JPanel implements DefaultGridValues {
         this.width = width;
         this.height = height;
         this.blockSize = blockSize;
-        maze = new MazeData();
+        maze = new DefaultMaze();
     }
 
     public int getScore() {

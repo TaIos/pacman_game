@@ -14,13 +14,13 @@ public abstract class AbstractEntity {
 
     protected abstract void loadImages() throws IOException;
 
-    protected abstract Image getImage();
+    public abstract Image getImage();
 
-    protected Position getPosition() {
+    public Position getPosition() {
         return position;
     }
 
-    protected int getSpeed() {
+    public int getSpeed() {
         return speed;
     }
 }

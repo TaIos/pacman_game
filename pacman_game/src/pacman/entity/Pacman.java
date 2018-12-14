@@ -15,7 +15,6 @@ public class Pacman extends AbstractEntity
 
     private Position position;
     private Lives lives;
-    private int speed;
     private int score;
 
     public Pacman() {

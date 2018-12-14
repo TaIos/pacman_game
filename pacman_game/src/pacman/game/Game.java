@@ -5,11 +5,13 @@ import pacman.entity.Pacman;
 import pacman.graphics.GraphicsController;
 import pacman.grid.Grid;
 import pacman.grid.Position;
+import sun.awt.windows.ThemeReader;
 import sun.java2d.loops.GeneralRenderer;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.concurrent.TimeUnit;
 import javax.swing.*;
 
 public class Game implements DefaultGameValues, KeyListener {
@@ -18,9 +20,10 @@ public class Game implements DefaultGameValues, KeyListener {
     private Grid grid;
     private GraphicsController graphicsController;
     private JFrame frame;
-    private boolean pauseFlag = false;
+    private boolean pauseFlag, leftKey, rightKey, upKey, downKey;
 
     public Game() {
+        initFlags();
         loadImages();
         initGrid();
         initGhosts();
@@ -36,8 +39,7 @@ public class Game implements DefaultGameValues, KeyListener {
     private void tickComponent() {
         while (true) {
             try {
-                //Thread.sleep(1000 / DEFAULT_FPS);
-                Thread.sleep(200);
+                Thread.sleep(DEFAULT_DELAY_MILISECONDS);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -77,79 +79,59 @@ public class Game implements DefaultGameValues, KeyListener {
     }
 
     private void movePacman() {
-        int data[][], x, y, blockSize,
-                blockLeft, blockRight, blockTop, blockDown;
+        int data[][], x, y, blockSize, currBlock;
 
         blockSize = grid.getBlockSize();
         Position pos = pacman.getPosition();
         data = grid.getData();
         x = pacman.getPosition().getX();
         y = pacman.getPosition().getY();
-
-        /*
-        int a, b, c, d, e, f, g;
-        a = (x + blockSize / 2) / blockSize;
-        c = (x + blockSize / 2) / blockSize;
-        d = (x + blockSize) / blockSize;
-
-        e = (y + blockSize / 2) / blockSize;
-        f = (y + blockSize / 2) / blockSize;
-        g = (x + blockSize / 2) / blockSize;
-
-        System.out.println("blockLeft " + a + ", " + c);
-        System.out.println("blockRight " + a + ", " + d);
-        System.out.println("blockTop " + e + ", " + g);
-        System.out.println("blockDown " + f + ", " + g);
-
-        blockLeft = data[a][c];
-        blockRight = data[a][d];
-        blockTop = data[e][g];
-        blockDown = data[f][g];
-        */
-
-        blockDown = blockLeft = blockTop = blockRight = data[y / blockSize][x / blockSize];
+        currBlock = data[y / blockSize][x / blockSize];
+        int delta = pacman.getSpeed();
 
 
-        if ((blockLeft & 16) != 0) {
-            data[y / blockSize][x / blockSize] = (blockLeft & 15);
-            pacman.incScore();
+        if (x % blockSize == 0 && y % blockSize == 0) {
+            if ((currBlock & 16) != 0) {
+                data[y / blockSize][x / blockSize] = (currBlock & 15);
+                pacman.incScore();
+            }
+            if (leftKey) {
+                if ((currBlock & 1) == 0) {
+                    pos.setGoingLeft();
+                } else if (!((((currBlock & 2) == 0) && pos.isGoingUp())
+                        || (((currBlock & 8) == 0)) && pos.isGoingDown()))
+                    delta = 0;
+            } else if (upKey) {
+                if ((currBlock & 2) == 0) {
+                    pos.setGoindUp();
+                } else if (!((((currBlock & 1) == 0) && pos.isGoingLeft())
+                        || ((currBlock & 4) == 0) && pos.isGoingRight()))
+                    delta = 0;
+            } else if (rightKey) {
+                if ((currBlock & 4) == 0) {
+                    pos.setGoingRight();
+                } else if (!((((currBlock & 2) == 0) && pos.isGoingUp())
+                        || ((currBlock & 8) == 0) && pos.isGoingDown()))
+                    delta = 0;
+            } else if (downKey) {
+                if ((currBlock & 8) == 0) {
+                    pos.setGoingDown();
+                } else if (!((((currBlock & 1) == 0) && pos.isGoingLeft())
+                        || ((currBlock & 4) == 0) && pos.isGoingRight()))
+                    delta = 0;
+            }
         }
-
-        /*
-        // take point if there is any
-        if ((blockLeft & 16) != 0) {
-            data[a][c] = (blockLeft & 15);
-            pacman.incScore();
-        }
-        if ((blockRight & 16) != 0) {
-            data[a][d] = (blockRight & 15);
-            pacman.incScore();
-        }
-        if ((blockTop & 16) != 0) {
-            data[e][g] = (blockTop & 15);
-            pacman.incScore();
-        }
-        if ((blockDown & 16) != 0) {
-            data[f][g] = (blockDown & 15);
-            pacman.incScore();
-        }
-        */
-
-        int delta = 32;
 
         if (pos.isGoingLeft()) {
-            if ((blockLeft & 1) == 0)
-                pos.setX(x - delta);
+            pos.setX(x - delta);
         } else if (pos.isGoingUp()) {
-            if ((blockTop & 2) == 0)
-                pos.setY(y - delta);
+            pos.setY(y - delta);
         } else if (pos.isGoingRight()) {
-            if ((blockRight & 4) == 0)
-                pos.setX(x + delta);
+            pos.setX(x + delta);
         } else if (pos.isGoingDown()) {
-            if ((blockDown & 8) == 0)
-                pos.setY(y + delta);
+            pos.setY(y + delta);
         }
+
     }
 
     private void moveGhotsts() {
@@ -199,6 +181,11 @@ public class Game implements DefaultGameValues, KeyListener {
 
     }
 
+    private void initFlags() {
+        pauseFlag = leftKey = rightKey = upKey = downKey = false;
+    }
+
+
     @Override
     public void keyPressed(KeyEvent keyEvent) {
         int key = keyEvent.getKeyCode();
@@ -207,22 +194,26 @@ public class Game implements DefaultGameValues, KeyListener {
             case KeyEvent.VK_LEFT:
             case KeyEvent.VK_A:
             case KeyEvent.VK_H:
-                pacman.getPosition().setGoingLeft();
+                leftKey = true;
+                rightKey = upKey = downKey = false;
                 break;
             case KeyEvent.VK_RIGHT:
             case KeyEvent.VK_D:
             case KeyEvent.VK_L:
-                pacman.getPosition().setGoingRight();
+                rightKey = true;
+                leftKey = upKey = downKey = false;
                 break;
             case KeyEvent.VK_UP:
             case KeyEvent.VK_W:
             case KeyEvent.VK_K:
-                pacman.getPosition().setGoindUp();
+                upKey = true;
+                leftKey = rightKey = downKey = false;
                 break;
             case KeyEvent.VK_DOWN:
             case KeyEvent.VK_S:
             case KeyEvent.VK_J:
-                pacman.getPosition().setGoingDown();
+                downKey = true;
+                leftKey = rightKey = upKey = false;
                 break;
             case KeyEvent.VK_PAUSE:
             case KeyEvent.VK_ESCAPE:

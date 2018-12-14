@@ -3,7 +3,7 @@ package pacman.grid;
 /**
  * Represents the maze, it't walls and points placement
  */
-public class MazeData implements DefaultGridValues {
+public class DefaultMaze implements DefaultGridValues {
 
     /**
      * 1 -> left wall
