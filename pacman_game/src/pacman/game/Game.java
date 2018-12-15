@@ -100,39 +100,52 @@ public class Game implements DefaultGameValues, KeyListener {
         currBlock = data[y / blockSize][x / blockSize];
         int delta = pacman.getSpeed();
 
-
-        if (x % blockSize == 0 && y % blockSize == 0) {
-            if ((currBlock & 16) != 0) {
-                data[y / blockSize][x / blockSize] = (currBlock & 15);
-                pacman.incScore();
-            }
-            if (leftKey) {
-                if ((currBlock & 1) == 0) {
-                    pos.setGoingLeft();
-                } else if (!((((currBlock & 2) == 0) && pos.isGoingUp())
-                        || (((currBlock & 8) == 0)) && pos.isGoingDown()))
-                    delta = 0;
-            } else if (upKey) {
-                if ((currBlock & 2) == 0) {
-                    pos.setGoindUp();
-                } else if (!((((currBlock & 1) == 0) && pos.isGoingLeft())
-                        || ((currBlock & 4) == 0) && pos.isGoingRight()))
-                    delta = 0;
-            } else if (rightKey) {
-                if ((currBlock & 4) == 0) {
-                    pos.setGoingRight();
-                } else if (!((((currBlock & 2) == 0) && pos.isGoingUp())
-                        || ((currBlock & 8) == 0) && pos.isGoingDown()))
-                    delta = 0;
-            } else if (downKey) {
-                if ((currBlock & 8) == 0) {
-                    pos.setGoingDown();
-                } else if (!((((currBlock & 1) == 0) && pos.isGoingLeft())
-                        || ((currBlock & 4) == 0) && pos.isGoingRight()))
-                    delta = 0;
+        // can change horizontal direction immediately
+        if (pos.isGoingRight() && leftKey)
+            pos.setGoingLeft();
+        else if (pos.isGoingLeft() && rightKey)
+            pos.setGoingRight();
+        else if (pos.isGoingUp() && downKey)
+            pos.setGoingDown();
+        else if (pos.isGoingDown() && upKey)
+            pos.setGoindUp();
+        else {
+            // perpendicular movement change to current movement
+            if (x % blockSize == 0 && y % blockSize == 0) {
+                if ((currBlock & 16) != 0) {
+                    data[y / blockSize][x / blockSize] = (currBlock & 15);
+                    pacman.incScore();
+                }
+                if (leftKey) {
+                    if ((currBlock & 1) == 0) {
+                        pos.setGoingLeft();
+                    } else if (!((((currBlock & 2) == 0) && pos.isGoingUp())
+                            || (((currBlock & 8) == 0)) && pos.isGoingDown()))
+                        delta = 0;
+                } else if (upKey) {
+                    if ((currBlock & 2) == 0) {
+                        pos.setGoindUp();
+                    } else if (!((((currBlock & 1) == 0) && pos.isGoingLeft())
+                            || ((currBlock & 4) == 0) && pos.isGoingRight()))
+                        delta = 0;
+                } else if (rightKey) {
+                    if ((currBlock & 4) == 0) {
+                        pos.setGoingRight();
+                    } else if (!((((currBlock & 2) == 0) && pos.isGoingUp())
+                            || ((currBlock & 8) == 0) && pos.isGoingDown()))
+                        delta = 0;
+                } else if (downKey) {
+                    if ((currBlock & 8) == 0) {
+                        pos.setGoingDown();
+                    } else if (!((((currBlock & 1) == 0) && pos.isGoingLeft())
+                            || ((currBlock & 4) == 0) && pos.isGoingRight()))
+                        delta = 0;
+                }
             }
         }
 
+
+        // make the move
         if (pos.isGoingLeft()) {
             pos.setX(x - delta);
         } else if (pos.isGoingUp()) {
