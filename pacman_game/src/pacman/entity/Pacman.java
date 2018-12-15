@@ -64,6 +64,10 @@ public class Pacman extends AbstractEntity
         score++;
     }
 
+    public void decLives() {
+        lives--;
+    }
+
     @Override
     public Image getImage() {
         if (position.isGoingLeft())

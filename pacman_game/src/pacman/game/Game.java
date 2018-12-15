@@ -47,11 +47,14 @@ public class Game implements DefaultGameValues, KeyListener {
             Thread.sleep(DEFAULT_DELAY_MILISECONDS);
 
             if (collision()) {
+                pacman.decLives();
                 if (pacman.isDead()) {
                     lost();
                     break;
-                } else
+                } else {
+                    System.out.println("Resetting grid");
                     resetGrid();
+                }
             }
 
             if (grid.noMorePoints() && pacman.isAlive()) {
@@ -145,7 +148,6 @@ public class Game implements DefaultGameValues, KeyListener {
     }
 
     boolean collision() {
-                /*
         int x, y, gx, gy, delta;
         Position pos = pacman.getPosition();
         x = pos.getX();
@@ -160,7 +162,6 @@ public class Game implements DefaultGameValues, KeyListener {
                     && (gy >= y && gy <= y + delta))
                 return true;
         }
-        */
         return false;
     }
 
@@ -196,6 +197,10 @@ public class Game implements DefaultGameValues, KeyListener {
         for (int i = 0; i < DEFAULT_GHOST_CNT; i++) {
             ghosts[i] = new Ghost();
         }
+        ghosts[0].setPosition(new Position(200, 200));
+        ghosts[1].setPosition(new Position(200, 232));
+        ghosts[2].setPosition(new Position(200, 264));
+        ghosts[3].setPosition(new Position(200, 298));
     }
 
     private void loadImages() {
