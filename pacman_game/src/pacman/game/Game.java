@@ -268,6 +268,7 @@ public class Game implements DefaultGameValues, KeyListener {
         ghosts[2].setPosition(new Position(7 * blkSIze, 9 * blkSIze));
 
         ghosts[3] = new Ghost("ghost_blue_right.png");
+        ghosts[3] = new Ghost("vagner.png");
         ghosts[3].setPosition(new Position(7 * blkSIze, 10 * blkSIze));
         ghosts[3].setAI(true);
     }
