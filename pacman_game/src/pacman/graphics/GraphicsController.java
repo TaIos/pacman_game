@@ -49,8 +49,9 @@ public class GraphicsController extends JPanel implements DefaultGraphicsValues,
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g); // erase whatever is currently drawn (JComponent superclass)
-        g.drawImage(backround, 0, 0, null);
         Graphics2D g2d = (Graphics2D) g;
+
+        g2d.drawImage(backround, 0, 0, null);
         drawMaze(g2d);
         drawPacman(g2d);
         drawGhosts(g2d);
@@ -93,15 +94,24 @@ public class GraphicsController extends JPanel implements DefaultGraphicsValues,
     }
 
     private void drawPacman(Graphics2D g2d) {
-        Image imPc = pacman.getImage();
         int x, y;
+        Image imPc = pacman.getImage();
+
         x = pacman.getPosition().getX();
         y = pacman.getPosition().getY();
         g2d.drawImage(imPc, x, y, null);
     }
 
     private void drawGhosts(Graphics2D g2d) {
+        int x, y;
+        Image imG;
 
+        for (Ghost g : ghosts) {
+            x = g.getPosition().getX();
+            y = g.getPosition().getY();
+            imG = g.getImage();
+            g2d.drawImage(imG, x, y, null);
+        }
     }
 
     private void showScore(Graphics2D g2d) {

@@ -35,16 +35,16 @@ public class Game implements DefaultGameValues, KeyListener {
 
     public void start() {
         graphicsController.showMenu();
-        tickComponent();
+        try {
+            tickComponent();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
-    private void tickComponent() {
+    private void tickComponent() throws InterruptedException {
         while (true) {
-            try {
-                Thread.sleep(DEFAULT_DELAY_MILISECONDS);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            Thread.sleep(DEFAULT_DELAY_MILISECONDS);
 
             if (collision()) {
                 if (pacman.isDead()) {
@@ -60,8 +60,7 @@ public class Game implements DefaultGameValues, KeyListener {
             }
 
             movePacman();
-            //moveGhotsts();
-
+            moveGhotsts();
             graphicsController.drawScene();
         }
     }
