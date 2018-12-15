@@ -7,14 +7,11 @@ import pacman.grid.Grid;
 import pacman.grid.MazeMaps.EmptyMaze;
 import pacman.grid.MazeMaps.PJVMaze;
 import pacman.grid.Position;
-import sun.awt.windows.ThemeReader;
-import sun.java2d.loops.GeneralRenderer;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.concurrent.TimeUnit;
-import javax.swing.*;
 
 public class Game implements DefaultGameValues, KeyListener {
     private Pacman pacman;
@@ -193,13 +190,22 @@ public class Game implements DefaultGameValues, KeyListener {
     }
 
     private void initGhosts() {
+        if (DEFAULT_GHOST_CNT != 4)
+            throw new Error("Ghost count is not equal to 4");
+
+
         ghosts = new Ghost[DEFAULT_GHOST_CNT];
-        for (int i = 0; i < DEFAULT_GHOST_CNT; i++) {
-            ghosts[i] = new Ghost();
-        }
+
+        ghosts[0] = new Ghost("ghost_policeman_right.png");
         ghosts[0].setPosition(new Position(200, 200));
+
+        ghosts[1] = new Ghost("ghost_princess_right.png");
         ghosts[1].setPosition(new Position(200, 232));
+
+        ghosts[2] = new Ghost("ghost_soldier_right.png");
         ghosts[2].setPosition(new Position(200, 264));
+
+        ghosts[3] = new Ghost("ghost_blue_right.png");
         ghosts[3].setPosition(new Position(200, 298));
     }
 

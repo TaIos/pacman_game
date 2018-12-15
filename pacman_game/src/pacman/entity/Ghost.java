@@ -6,9 +6,9 @@ import java.io.IOException;
 
 public class Ghost extends AbstractEntity implements DefaultEntityValues {
 
-    public Ghost(String imagePath) {
+    public Ghost(String imageName) {
         super();
-        loadImages(imagePath);
+        loadImages(BASE_IMAGE_PATH + File.separator + imageName);
     }
 
     public Ghost() {
