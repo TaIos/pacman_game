@@ -50,6 +50,7 @@ public class Game implements DefaultGameValues, KeyListener {
 
             if (collision()) {
                 pacman.decLives();
+                Thread.sleep(COLLISION_DELAY_MILISECONDS);
                 if (pacman.isDead()) {
                     lost();
                     break;
@@ -201,18 +202,18 @@ public class Game implements DefaultGameValues, KeyListener {
     }
 
     private boolean collision() {
-        int x, y, gx, gy, delta;
+        int x, y, gx, gy, blkSize;
         Position pos = pacman.getPosition();
         x = pos.getX();
         y = pos.getY();
-        delta = grid.getBlockSize();
+        blkSize = grid.getBlockSize();
 
         for (Ghost g : ghosts) {
-            gx = g.getPosition().getX();
-            gy = g.getPosition().getY();
+            gx = g.getPosition().getX() + blkSize / 2;
+            gy = g.getPosition().getY() + blkSize / 2;
 
-            if ((gx >= x && gx <= x + delta)
-                    && (gy >= y && gy <= y + delta))
+            if ((gx >= x && gx <= x + blkSize
+                    && (gy >= y && gy <= y + blkSize)))
                 return true;
         }
         return false;

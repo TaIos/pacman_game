@@ -9,5 +9,6 @@ public interface DefaultGameValues {
     int DEFAULT_FPS = 60;
     int TOP_BAR_HEIGHT_PIXEL = 37;
     int INFO_BAR_PIXEL_HEIGHT = 30;
+    int COLLISION_DELAY_MILISECONDS = 3000;
     Font DEFAULT_FONT = new Font("Helvetica", Font.BOLD, 14);
 }
