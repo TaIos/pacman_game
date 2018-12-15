@@ -146,6 +146,20 @@ public class Game implements DefaultGameValues, KeyListener {
     }
 
     boolean collision() {
+        int x, y, gx, gy, delta;
+        Position pos = pacman.getPosition();
+        x = pos.getX();
+        y = pos.getY();
+        delta = grid.getBlockSize();
+
+        for (Ghost g : ghosts) {
+            gx = g.getPosition().getX();
+            gy = g.getPosition().getY();
+
+            if ((gx >= x && gx <= x + delta)
+                    && (gy >= y && gy <= y + delta))
+                return true;
+        }
 
         return false;
     }
