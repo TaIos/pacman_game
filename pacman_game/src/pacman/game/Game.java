@@ -146,6 +146,7 @@ public class Game implements DefaultGameValues, KeyListener {
     }
 
     boolean collision() {
+                /*
         int x, y, gx, gy, delta;
         Position pos = pacman.getPosition();
         x = pos.getX();
@@ -160,7 +161,7 @@ public class Game implements DefaultGameValues, KeyListener {
                     && (gy >= y && gy <= y + delta))
                 return true;
         }
-
+        */
         return false;
     }
 
@@ -192,10 +193,10 @@ public class Game implements DefaultGameValues, KeyListener {
     }
 
     private void initGhosts() {
-        // create 4 ghosts
-        ghosts = new Ghost[4];
-
-        //ghosts[0].ge
+        ghosts = new Ghost[DEFAULT_GHOST_CNT];
+        for (int i = 0; i < DEFAULT_GHOST_CNT; i++) {
+            ghosts[i] = new Ghost();
+        }
     }
 
     private void loadImages() {

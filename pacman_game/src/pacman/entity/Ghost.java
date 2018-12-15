@@ -1,28 +1,31 @@
 package pacman.entity;
 
-import pacman.grid.Position;
+import javax.imageio.ImageIO;
+import java.io.File;
+import java.io.IOException;
 
-import java.awt.*;
+public class Ghost extends AbstractEntity implements DefaultEntityValues {
 
-public class Ghost extends AbstractEntity {
-
-    Ghost(String imagePath) {
-
+    public Ghost(String imagePath) {
+        super();
+        loadImages(imagePath);
     }
 
+    public Ghost() {
+        this(BASE_IMAGE_PATH + File.separator + DEFAULT_GHOST_IMAGE);
+    }
 
-    @Override
     public void move() {
 
     }
 
-    @Override
-    protected void loadImages() {
+    protected void loadImages(String imagePath) {
+        try {
+            File tmp = new File(imagePath);
+            image = ImageIO.read(tmp);
+        } catch (IOException e) {
+            System.out.println(e);
+        }
 
-    }
-
-    @Override
-    public Image getImage() {
-        return image;
     }
 }
