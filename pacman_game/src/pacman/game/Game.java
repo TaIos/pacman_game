@@ -19,14 +19,14 @@ public class Game implements DefaultGameValues, KeyListener {
     private Grid grid;
     private GraphicsController graphicsController;
     private JFrame frame;
-    private boolean pauseFlag, leftKey, rightKey, upKey, downKey;
+    private boolean pauseFlag;
 
     public Game() {
         //grid = new Grid(new EmptyMaze());
         grid = new Grid(new PJVMaze());
         pacman = new Pacman();
-        initFlags();
         loadImages();
+        initFlags();
         initGhosts();
         initGraphics();
     }
@@ -86,86 +86,23 @@ public class Game implements DefaultGameValues, KeyListener {
     }
 
     private void movePacman() {
-        int data[][], x, y, blockSize, currBlock;
-
-        blockSize = grid.getBlockSize();
-        Position pos = pacman.getPosition();
-        data = grid.getData();
+        int x, y;
         x = pacman.getPosition().getX();
         y = pacman.getPosition().getY();
-        currBlock = data[y / blockSize][x / blockSize];
-        int delta = pacman.getSpeed();
 
-        // can change horizontal direction immediately
-        if (pos.isGoingRight() && leftKey)
-            pos.setGoingLeft();
-        else if (pos.isGoingLeft() && rightKey)
-            pos.setGoingRight();
-        else if (pos.isGoingUp() && downKey)
-            pos.setGoingDown();
-        else if (pos.isGoingDown() && upKey)
-            pos.setGoingUp();
-        else {
-            // perpendicular movement change to current movement
-            if (x % blockSize == 0 && y % blockSize == 0) {
-                if ((currBlock & 16) != 0) {
-                    data[y / blockSize][x / blockSize] = (currBlock & 15);
-                    pacman.incScore();
-                }
-                if (leftKey) {
-                    if ((currBlock & 1) == 0) {
-                        pos.setGoingLeft();
-                    } else if (!((((currBlock & 2) == 0) && pos.isGoingUp())
-                            || (((currBlock & 8) == 0)) && pos.isGoingDown()))
-                        delta = 0;
-                } else if (upKey) {
-                    if ((currBlock & 2) == 0) {
-                        pos.setGoingUp();
-                    } else if (!((((currBlock & 1) == 0) && pos.isGoingLeft())
-                            || ((currBlock & 4) == 0) && pos.isGoingRight()))
-                        delta = 0;
-                } else if (rightKey) {
-                    if ((currBlock & 4) == 0) {
-                        pos.setGoingRight();
-                    } else if (!((((currBlock & 2) == 0) && pos.isGoingUp())
-                            || ((currBlock & 8) == 0) && pos.isGoingDown()))
-                        delta = 0;
-                } else if (downKey) {
-                    if ((currBlock & 8) == 0) {
-                        pos.setGoingDown();
-                    } else if (!((((currBlock & 1) == 0) && pos.isGoingLeft())
-                            || ((currBlock & 4) == 0) && pos.isGoingRight()))
-                        delta = 0;
-                }
-            }
-        }
+        if (grid.removePointIfPresent(x, y))
+            pacman.incScore();
 
-
-        // make the move
-        if (pos.isGoingLeft()) {
-            pos.setX(x - delta);
-        } else if (pos.isGoingUp()) {
-            pos.setY(y - delta);
-        } else if (pos.isGoingRight()) {
-            pos.setX(x + delta);
-        } else if (pos.isGoingDown()) {
-            pos.setY(y + delta);
-        }
-
+        pacman.move(grid.blockAt(x, y), grid.isAtCentre(x, y));
     }
 
     private void moveGhosts() {
-        int tile, blkSize, x, y;
-        boolean isAtCentre;
-        int[][] data = grid.getData();
-        blkSize = grid.getBlockSize();
+        int x, y;
 
         for (Ghost g : ghosts) {
             x = g.getPosition().getX();
             y = g.getPosition().getY();
-            tile = data[y / blkSize][x / blkSize];
-            isAtCentre = (x % blkSize == 0) && (y % blkSize == 0);
-            g.move(tile, isAtCentre);
+            g.move(grid.blockAt(x, y), grid.isAtCentre(x, y));
         }
     }
 
@@ -235,37 +172,32 @@ public class Game implements DefaultGameValues, KeyListener {
     }
 
     private void initFlags() {
-        pauseFlag = leftKey = rightKey = upKey = downKey = false;
+        pauseFlag = false;
     }
 
     @Override
     public void keyPressed(KeyEvent keyEvent) {
         int key = keyEvent.getKeyCode();
-
         switch (key) {
             case KeyEvent.VK_LEFT:
             case KeyEvent.VK_A:
             case KeyEvent.VK_H:
-                leftKey = true;
-                rightKey = upKey = downKey = false;
+                pacman.setLeftKeyPressed();
                 break;
             case KeyEvent.VK_RIGHT:
             case KeyEvent.VK_D:
             case KeyEvent.VK_L:
-                rightKey = true;
-                leftKey = upKey = downKey = false;
+                pacman.setRightKeyPressed();
                 break;
             case KeyEvent.VK_UP:
             case KeyEvent.VK_W:
             case KeyEvent.VK_K:
-                upKey = true;
-                leftKey = rightKey = downKey = false;
+                pacman.setUpKeyPressed();
                 break;
             case KeyEvent.VK_DOWN:
             case KeyEvent.VK_S:
             case KeyEvent.VK_J:
-                downKey = true;
-                leftKey = rightKey = upKey = false;
+                pacman.setDownKeyPressed();
                 break;
             case KeyEvent.VK_PAUSE:
             case KeyEvent.VK_ESCAPE:

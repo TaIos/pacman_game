@@ -25,6 +25,17 @@ public class Grid extends JPanel implements DefaultGridValues {
         maze = new DefaultMaze();
     }
 
+    public boolean removePointIfPresent(int x, int y) {
+        int block = blockAt(x, y);
+        int data[][] = maze.getData();
+
+        if ((block & 16) != 0) {
+            data[y / blockSize][x / blockSize] = (block & 15);
+            return true;
+        }
+        return false;
+    }
+
     public int getScore() {
         int sum = 0;
         int data[][] = maze.getData();
@@ -62,6 +73,15 @@ public class Grid extends JPanel implements DefaultGridValues {
 
     public int[][] getData() {
         return maze.getData();
+    }
+
+    public int blockAt(int x, int y) {
+        int data[][] = maze.getData();
+        return data[y / blockSize][x / blockSize];
+    }
+
+    public boolean isAtCentre(int x, int y) {
+        return (x % blockSize == 0) && (y % blockSize == 0);
     }
 
 }
