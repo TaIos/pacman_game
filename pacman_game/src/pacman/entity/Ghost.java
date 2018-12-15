@@ -5,11 +5,9 @@ import java.io.File;
 import java.io.IOException;
 
 public class Ghost extends AbstractEntity implements DefaultEntityValues {
-    private boolean isAI;
 
     public Ghost(String imageName) {
         super();
-        this.isAI = false;
         loadImages(BASE_IMAGE_PATH + File.separator + imageName);
     }
 
@@ -24,14 +22,18 @@ public class Ghost extends AbstractEntity implements DefaultEntityValues {
         } catch (IOException e) {
             System.out.println(e);
         }
-
     }
 
-    public boolean isAI() {
-        return isAI;
-    }
+    @Override
+    public void move(int tile, boolean isAtCentre) {
 
-    public void setAI(boolean AI) {
-        isAI = AI;
+        // direction can be changed only at centre
+        if (isAtCentre) {
+
+            // change movement if obstacle or at random
+            if (!canContinueMoving(tile) || random.nextInt(RND_MOVE) == 0)
+                setRandomValidDirection(tile);
+        }
+        writeMove();
     }
 }

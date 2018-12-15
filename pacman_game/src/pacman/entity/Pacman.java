@@ -79,6 +79,11 @@ public class Pacman extends AbstractEntity
         return pacmRightIm;
     }
 
+    @Override
+    public void move(int tile, boolean isAtCentre) {
+
+    }
+
     public void setLives(int lives) {
         this.lives = lives;
     }

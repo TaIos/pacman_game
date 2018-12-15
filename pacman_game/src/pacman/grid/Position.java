@@ -65,13 +65,29 @@ public class Position implements DefaultGridValues {
         left = right = up = false;
     }
 
-    public void setGoindUp() {
+    public void setGoingUp() {
         up = true;
         left = right = down = false;
     }
 
     public void setStop() {
         left = right = up = down = false;
+    }
+
+    public boolean canGoLeft(int tile) {
+        return (tile & 1) == 0;
+    }
+
+    public boolean canGoUp(int tile) {
+        return (tile & 2) == 0;
+    }
+
+    public boolean canGoRight(int tile) {
+        return (tile & 4) == 0;
+    }
+
+    public boolean canGoDown(int tile) {
+        return (tile & 8) == 0;
     }
 
     @Override

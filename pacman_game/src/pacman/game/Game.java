@@ -1,11 +1,10 @@
 package pacman.game;
 
-import javafx.geometry.Pos;
 import pacman.entity.Ghost;
+import pacman.entity.GhostAI;
 import pacman.entity.Pacman;
 import pacman.graphics.GraphicsController;
 import pacman.grid.Grid;
-import pacman.grid.MazeMaps.EmptyMaze;
 import pacman.grid.MazeMaps.PJVMaze;
 import pacman.grid.Position;
 
@@ -13,7 +12,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.Random;
 
 public class Game implements DefaultGameValues, KeyListener {
     private Pacman pacman;
@@ -21,14 +19,12 @@ public class Game implements DefaultGameValues, KeyListener {
     private Grid grid;
     private GraphicsController graphicsController;
     private JFrame frame;
-    Random random;
     private boolean pauseFlag, leftKey, rightKey, upKey, downKey;
 
     public Game() {
         //grid = new Grid(new EmptyMaze());
         grid = new Grid(new PJVMaze());
         pacman = new Pacman();
-        random = new Random();
         initFlags();
         loadImages();
         initGhosts();
@@ -65,7 +61,7 @@ public class Game implements DefaultGameValues, KeyListener {
             }
 
             movePacman();
-            moveGhotsts();
+            moveGhosts();
             graphicsController.drawScene();
         }
     }
@@ -108,7 +104,7 @@ public class Game implements DefaultGameValues, KeyListener {
         else if (pos.isGoingUp() && downKey)
             pos.setGoingDown();
         else if (pos.isGoingDown() && upKey)
-            pos.setGoindUp();
+            pos.setGoingUp();
         else {
             // perpendicular movement change to current movement
             if (x % blockSize == 0 && y % blockSize == 0) {
@@ -124,7 +120,7 @@ public class Game implements DefaultGameValues, KeyListener {
                         delta = 0;
                 } else if (upKey) {
                     if ((currBlock & 2) == 0) {
-                        pos.setGoindUp();
+                        pos.setGoingUp();
                     } else if (!((((currBlock & 1) == 0) && pos.isGoingLeft())
                             || ((currBlock & 4) == 0) && pos.isGoingRight()))
                         delta = 0;
@@ -158,59 +154,18 @@ public class Game implements DefaultGameValues, KeyListener {
 
     }
 
-    private void moveGhotsts() {
-        int x, y, blkSize, currBlock, data[][];
-        Position pos;
+    private void moveGhosts() {
+        int tile, blkSize, x, y;
+        boolean isAtCentre;
+        int[][] data = grid.getData();
         blkSize = grid.getBlockSize();
-        data = grid.getData();
 
         for (Ghost g : ghosts) {
-            pos = g.getPosition();
-            x = pos.getX();
-            y = pos.getY();
-            currBlock = data[y / blkSize][x / blkSize];
-
-            if (x % blkSize == 0 && y % blkSize == 0) {
-                do {
-                    int rng = random.nextInt(8);
-                    // check if can continue moving one direction
-                    if (((pos.isGoingLeft() && ((currBlock & 1) == 0))
-                            || (pos.isGoingUp() && ((currBlock & 2) == 0))
-                            || (pos.isGoingRight() && ((currBlock & 4) == 0))
-                            || (pos.isGoingDown() && ((currBlock & 8) == 0)))
-                            && rng != 0)
-                        break;
-
-                    int direction = random.nextInt(4);
-                    if ((direction == 0)  // left
-                            && ((currBlock & 1) == 0)) {
-                        pos.setGoingLeft();
-                        break;
-                    } else if ((direction == 1) // right
-                            && ((currBlock & 4) == 0)) {
-                        pos.setGoingRight();
-                        break;
-                    } else if ((direction == 2) // up
-                            && ((currBlock & 2) == 0)) {
-                        pos.setGoindUp();
-                        break;
-                    } else if ((direction == 3) // down
-                            && ((currBlock & 8) == 0)) {
-                        pos.setGoingDown();
-                        break;
-                    }
-                } while (true);
-            }
-
-            if (pos.isGoingLeft()) {
-                pos.setX(x - g.getSpeed());
-            } else if (pos.isGoingUp()) {
-                pos.setY(y - g.getSpeed());
-            } else if (pos.isGoingRight()) {
-                pos.setX(x + g.getSpeed());
-            } else if (pos.isGoingDown()) {
-                pos.setY(y + g.getSpeed());
-            }
+            x = g.getPosition().getX();
+            y = g.getPosition().getY();
+            tile = data[y / blkSize][x / blkSize];
+            isAtCentre = (x % blkSize == 0) && (y % blkSize == 0);
+            g.move(tile, isAtCentre);
         }
     }
 
@@ -221,6 +176,7 @@ public class Game implements DefaultGameValues, KeyListener {
         y = pos.getY();
         blkSize = grid.getBlockSize();
 
+        // collision if centre of ghost is in pacman's square
         for (Ghost g : ghosts) {
             gx = g.getPosition().getX() + blkSize / 2;
             gy = g.getPosition().getY() + blkSize / 2;
@@ -267,10 +223,11 @@ public class Game implements DefaultGameValues, KeyListener {
         ghosts[2] = new Ghost("ghost_soldier_right.png");
         ghosts[2].setPosition(new Position(7 * blkSIze, 9 * blkSIze));
 
-        ghosts[3] = new Ghost("ghost_blue_right.png");
-        ghosts[3] = new Ghost("vagner.png");
+        //ghosts[3] = new GhostAI("ghost_blue_right.png");
+        ghosts[3] = new GhostAI("vagner.png");
         ghosts[3].setPosition(new Position(7 * blkSIze, 10 * blkSIze));
-        ghosts[3].setAI(true);
+
+
     }
 
     private void loadImages() {
