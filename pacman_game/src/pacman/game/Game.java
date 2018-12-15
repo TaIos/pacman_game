@@ -1,5 +1,6 @@
 package pacman.game;
 
+import javafx.geometry.Pos;
 import pacman.entity.Ghost;
 import pacman.entity.Pacman;
 import pacman.graphics.GraphicsController;
@@ -12,6 +13,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.Random;
 
 public class Game implements DefaultGameValues, KeyListener {
     private Pacman pacman;
@@ -19,14 +21,17 @@ public class Game implements DefaultGameValues, KeyListener {
     private Grid grid;
     private GraphicsController graphicsController;
     private JFrame frame;
+    Random random;
     private boolean pauseFlag, leftKey, rightKey, upKey, downKey;
 
     public Game() {
+        //grid = new Grid(new EmptyMaze());
+        grid = new Grid(new PJVMaze());
+        pacman = new Pacman();
+        random = new Random();
         initFlags();
         loadImages();
-        initGrid();
         initGhosts();
-        initPacman();
         initGraphics();
     }
 
@@ -49,12 +54,11 @@ public class Game implements DefaultGameValues, KeyListener {
                     lost();
                     break;
                 } else {
-                    System.out.println("Resetting grid");
                     resetGrid();
                 }
             }
 
-            if (grid.noMorePoints() && pacman.isAlive()) {
+            if (grid.noMorePoints()) {
                 won();
                 break;
             }
@@ -77,9 +81,10 @@ public class Game implements DefaultGameValues, KeyListener {
         pauseFlag = !pauseFlag;
     }
 
-    void resetGrid() {
+    private void resetGrid() {
         initFlags();
         initGhosts();
+        initGraphics();
         pacman.setPosition(new Position());
     }
 
@@ -140,11 +145,62 @@ public class Game implements DefaultGameValues, KeyListener {
     }
 
     private void moveGhotsts() {
-        for (Ghost g : ghosts)
-            g.move();
+        int x, y, blkSize, currBlock, data[][];
+        Position pos;
+        blkSize = grid.getBlockSize();
+        data = grid.getData();
+
+        for (Ghost g : ghosts) {
+            pos = g.getPosition();
+            x = pos.getX();
+            y = pos.getY();
+            currBlock = data[y / blkSize][x / blkSize];
+
+            if (x % blkSize == 0 && y % blkSize == 0) {
+                do {
+                    int rng = random.nextInt(8);
+                    // check if can continue moving one direction
+                    if (((pos.isGoingLeft() && ((currBlock & 1) == 0))
+                            || (pos.isGoingUp() && ((currBlock & 2) == 0))
+                            || (pos.isGoingRight() && ((currBlock & 4) == 0))
+                            || (pos.isGoingDown() && ((currBlock & 8) == 0)))
+                            && rng != 0)
+                        break;
+
+                    int direction = random.nextInt(4);
+                    if ((direction == 0)  // left
+                            && ((currBlock & 1) == 0)) {
+                        pos.setGoingLeft();
+                        break;
+                    } else if ((direction == 1) // right
+                            && ((currBlock & 4) == 0)) {
+                        pos.setGoingRight();
+                        break;
+                    } else if ((direction == 2) // up
+                            && ((currBlock & 2) == 0)) {
+                        pos.setGoindUp();
+                        break;
+                    } else if ((direction == 3) // down
+                            && ((currBlock & 8) == 0)) {
+                        pos.setGoingDown();
+                        break;
+                    }
+                } while (true);
+            }
+
+            if (pos.isGoingLeft()) {
+                pos.setX(x - g.getSpeed());
+            } else if (pos.isGoingUp()) {
+                pos.setY(y - g.getSpeed());
+            } else if (pos.isGoingRight()) {
+                pos.setX(x + g.getSpeed());
+            } else if (pos.isGoingDown()) {
+                pos.setY(y + g.getSpeed());
+            }
+        }
     }
 
-    boolean collision() {
+    private boolean collision() {
         int x, y, gx, gy, delta;
         Position pos = pacman.getPosition();
         x = pos.getX();
@@ -160,11 +216,6 @@ public class Game implements DefaultGameValues, KeyListener {
                 return true;
         }
         return false;
-    }
-
-    private void initGrid() {
-        grid = new Grid(new PJVMaze());
-        grid = new Grid(new EmptyMaze());
     }
 
     private void initGraphics() {
@@ -185,28 +236,26 @@ public class Game implements DefaultGameValues, KeyListener {
         frame.setVisible(true);
     }
 
-    private void initPacman() {
-        pacman = new Pacman();
-    }
-
     private void initGhosts() {
         if (DEFAULT_GHOST_CNT != 4)
             throw new Error("Ghost count is not equal to 4");
 
+        int blkSIze = grid.getBlockSize();
 
         ghosts = new Ghost[DEFAULT_GHOST_CNT];
 
         ghosts[0] = new Ghost("ghost_policeman_right.png");
-        ghosts[0].setPosition(new Position(200, 200));
+        ghosts[0].setPosition(new Position(7 * blkSIze, 7 * blkSIze));
 
         ghosts[1] = new Ghost("ghost_princess_right.png");
-        ghosts[1].setPosition(new Position(200, 232));
+        ghosts[1].setPosition(new Position(7 * blkSIze, 8 * blkSIze));
 
         ghosts[2] = new Ghost("ghost_soldier_right.png");
-        ghosts[2].setPosition(new Position(200, 264));
+        ghosts[2].setPosition(new Position(7 * blkSIze, 9 * blkSIze));
 
         ghosts[3] = new Ghost("ghost_blue_right.png");
-        ghosts[3].setPosition(new Position(200, 298));
+        ghosts[3].setPosition(new Position(7 * blkSIze, 10 * blkSIze));
+        ghosts[3].setAI(true);
     }
 
     private void loadImages() {

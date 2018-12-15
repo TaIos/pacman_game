@@ -5,18 +5,16 @@ import java.io.File;
 import java.io.IOException;
 
 public class Ghost extends AbstractEntity implements DefaultEntityValues {
+    private boolean isAI;
 
     public Ghost(String imageName) {
         super();
+        this.isAI = false;
         loadImages(BASE_IMAGE_PATH + File.separator + imageName);
     }
 
     public Ghost() {
         this(BASE_IMAGE_PATH + File.separator + DEFAULT_GHOST_IMAGE);
-    }
-
-    public void move() {
-
     }
 
     protected void loadImages(String imagePath) {
@@ -27,5 +25,13 @@ public class Ghost extends AbstractEntity implements DefaultEntityValues {
             System.out.println(e);
         }
 
+    }
+
+    public boolean isAI() {
+        return isAI;
+    }
+
+    public void setAI(boolean AI) {
+        isAI = AI;
     }
 }

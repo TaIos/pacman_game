@@ -109,6 +109,7 @@ public class GraphicsController extends JPanel implements DefaultGraphicsValues,
         for (Ghost g : ghosts) {
             x = g.getPosition().getX();
             y = g.getPosition().getY();
+            System.out.println(x + ", " + y);
             imG = g.getImage();
             g2d.drawImage(imG, x, y, null);
         }
