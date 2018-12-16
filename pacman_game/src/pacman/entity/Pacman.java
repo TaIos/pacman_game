@@ -22,7 +22,7 @@ public class Pacman extends AbstractEntity implements DefaultEntityValues {
         leftKeyPressed = rightKeyPressed = upKeyPressed = downKeyPressed = false;
     }
 
-    protected void loadImages() {
+    private void loadImages() {
         String pacmLeftImagePath = BASE_IMAGE_PATH + File.separator + "pacman_open_left.png";
         String pacmanRightImagePath = BASE_IMAGE_PATH + File.separator + "pacman_open_right.png";
         String pacmanUpImagePath = BASE_IMAGE_PATH + File.separator + "pacman_open_up.png";
@@ -82,6 +82,14 @@ public class Pacman extends AbstractEntity implements DefaultEntityValues {
                 || (position.isGoingRight() && leftKeyPressed)
                 || (position.isGoingUp() && downKeyPressed)
                 || (position.isGoingDown() && upKeyPressed);
+    }
+
+    public void reset() {
+        image = pacmRightIm;
+        position.setX(PACM_X);
+        position.setY(PACM_Y);
+        position.setStop();
+        leftKeyPressed = rightKeyPressed = upKeyPressed = downKeyPressed = false;
     }
 
     public void incScore() {

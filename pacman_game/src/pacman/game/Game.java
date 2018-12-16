@@ -80,9 +80,9 @@ public class Game implements DefaultGameValues, KeyListener {
 
     private void resetGrid() {
         initFlags();
+        pacman.reset();
         initGhosts();
         initGraphics();
-        pacman.setPosition(new Position());
     }
 
     private void movePacman() {
@@ -152,19 +152,17 @@ public class Game implements DefaultGameValues, KeyListener {
         ghosts = new Ghost[DEFAULT_GHOST_CNT];
 
         ghosts[0] = new Ghost("ghost_policeman_right.png");
-        ghosts[0].setPosition(new Position(7 * blkSIze, 7 * blkSIze));
+        ghosts[0].setPosition(new Position(9 * blkSIze, 7 * blkSIze));
 
         ghosts[1] = new Ghost("ghost_princess_right.png");
-        ghosts[1].setPosition(new Position(7 * blkSIze, 8 * blkSIze));
+        ghosts[1].setPosition(new Position(11 * blkSIze, 7 * blkSIze));
 
         ghosts[2] = new Ghost("ghost_soldier_right.png");
-        ghosts[2].setPosition(new Position(7 * blkSIze, 9 * blkSIze));
+        ghosts[2].setPosition(new Position(13 * blkSIze, 7 * blkSIze));
 
-        //ghosts[3] = new GhostAI("ghost_blue_right.png");
-        ghosts[3] = new GhostAI("vagner.png");
-        ghosts[3].setPosition(new Position(7 * blkSIze, 10 * blkSIze));
-
-
+        //ghosts[3] = new GhostAI("ghost_blue_right.png", grid.getData());
+        ghosts[3] = new GhostAI("vagner.png", grid, pacman.getPosition());
+        ghosts[3].setPosition(new Position(14 * blkSIze, 14 * blkSIze));
     }
 
     private void loadImages() {
