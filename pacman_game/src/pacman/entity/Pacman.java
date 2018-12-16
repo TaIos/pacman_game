@@ -20,6 +20,7 @@ public class Pacman extends AbstractEntity implements DefaultEntityValues {
         speed = DEFAULT_PACMAN_SPEED;
         score = 0;
         leftKeyPressed = rightKeyPressed = upKeyPressed = downKeyPressed = false;
+        position.setGoingRight();
     }
 
     private void loadImages() {

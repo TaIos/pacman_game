@@ -10,7 +10,7 @@ public interface DefaultEntityValues {
     int RND_MOVE = 9; // higher number lowers the chance of random ghost moves
     int PACM_X = 0;
     int PACM_Y = 0;
-    int GHOST_AI_PATH_LEN = 5;
+    int GHOST_AI_PATH_LEN = 1;
     int DEF_MARK = -1;
     int PCM_MARK = -2;
     int GHS_MARK = -3;

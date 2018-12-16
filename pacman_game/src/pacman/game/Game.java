@@ -9,6 +9,7 @@ import pacman.grid.MazeMaps.PJVMaze;
 import pacman.grid.Position;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -19,33 +20,41 @@ public class Game implements DefaultGameValues, KeyListener {
     private Grid grid;
     private GraphicsController graphicsController;
     private JFrame frame;
-    private boolean pauseFlag;
+    private JLabel infoLabel;
+    private boolean pauseFlag, inGameFlag;
 
     public Game() {
-        //grid = new Grid(new EmptyMaze());
         grid = new Grid(new PJVMaze());
         pacman = new Pacman();
-        loadImages();
         initFlags();
         initGhosts();
         initGraphics();
     }
 
     public void start() {
-        graphicsController.showMenu();
         try {
-            tickComponent();
+            run();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
 
+    private void run() throws InterruptedException {
+        waitScreen();
+        tickComponent();
+        resetGame();
+        run();
+    }
+
     private void tickComponent() throws InterruptedException {
         while (true) {
             Thread.sleep(DEFAULT_DELAY_MILISECONDS);
+            if (pauseFlag)
+                pause();
 
             if (collision()) {
                 pacman.decLives();
+                graphicsController.drawScene();
                 Thread.sleep(COLLISION_DELAY_MILISECONDS);
                 if (pacman.isDead()) {
                     lost();
@@ -66,23 +75,47 @@ public class Game implements DefaultGameValues, KeyListener {
         }
     }
 
-    private void won() {
-        System.out.println("You have won the game!");
+    private void waitScreen() throws InterruptedException {
+        infoLabel.setText("Press SPACE to start");
+        while (!inGameFlag)
+            Thread.sleep(10);
+        infoLabel.setText("");
     }
 
-    private void lost() {
-
+    private void won() throws InterruptedException {
+        inGameFlag = false;
+        infoLabel.setText("WON !");
+        Thread.sleep(5000);
+        infoLabel.setText("");
     }
 
-    private void pause() {
-        pauseFlag = !pauseFlag;
+    private void lost() throws InterruptedException {
+        inGameFlag = false;
+        infoLabel.setText("LOST !");
+        Thread.sleep(5000);
+        infoLabel.setText("");
+    }
+
+    private void pause() throws InterruptedException {
+        infoLabel.setText("PAUSE");
+        while (pauseFlag)
+            Thread.sleep(10);
+        infoLabel.setText("");
     }
 
     private void resetGrid() {
         initFlags();
         pacman.reset();
         initGhosts();
-        initGraphics();
+        resetGraphics();
+    }
+
+    private void resetGame() {
+        grid = new Grid(new PJVMaze());
+        pacman = new Pacman();
+        initFlags();
+        initGhosts();
+        resetGraphics();
     }
 
     private void movePacman() {
@@ -141,6 +174,14 @@ public class Game implements DefaultGameValues, KeyListener {
         frame.add(graphicsController);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
+
+        infoLabel = new JLabel("");
+        infoLabel.setFont(new Font("Serif", Font.BOLD, 23));
+        infoLabel.setForeground(Color.GREEN);
+        infoLabel.setPreferredSize(new Dimension(grid.getWidthInPixels(), grid.getHeightInPixels()));
+        infoLabel.setHorizontalAlignment(JLabel.CENTER);
+        infoLabel.setVerticalAlignment(JLabel.CENTER);
+        graphicsController.add(infoLabel);
     }
 
     private void initGhosts() {
@@ -165,12 +206,17 @@ public class Game implements DefaultGameValues, KeyListener {
         ghosts[3].setPosition(new Position(14 * blkSIze, 14 * blkSIze));
     }
 
-    private void loadImages() {
-
-    }
-
     private void initFlags() {
         pauseFlag = false;
+        inGameFlag = false;
+    }
+
+    private void resetGraphics() {
+        graphicsController.setPacman(pacman);
+        graphicsController.setGhosts(ghosts);
+        graphicsController.setGrid(grid);
+        infoLabel.setText("");
+        graphicsController.drawScene();
     }
 
     @Override
@@ -199,7 +245,10 @@ public class Game implements DefaultGameValues, KeyListener {
                 break;
             case KeyEvent.VK_PAUSE:
             case KeyEvent.VK_ESCAPE:
-                pause();
+                pauseFlag = !pauseFlag;
+                break;
+            case KeyEvent.VK_SPACE:
+                inGameFlag = true;
                 break;
         }
     }

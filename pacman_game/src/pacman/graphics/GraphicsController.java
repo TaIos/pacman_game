@@ -10,21 +10,18 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
-import javax.swing.JPanel;
+import javax.swing.*;
 
 public class GraphicsController extends JPanel implements DefaultGraphicsValues, DefaultGameValues {
-    private final Pacman pacman;
-    private final Ghost ghosts[];
-    private final Grid grid;
-
-    private Graphics2D graphics2D;
+    private Pacman pacman;
+    private Ghost ghosts[];
+    private Grid grid;
     private Image backround;
 
     public GraphicsController(Pacman pacman, Ghost ghosts[], Grid grid) {
         this.pacman = pacman;
         this.ghosts = ghosts;
         this.grid = grid;
-
         loadImages();
     }
 
@@ -127,7 +124,15 @@ public class GraphicsController extends JPanel implements DefaultGraphicsValues,
                 grid.getHeightInPixels() + TOP_BAR_HEIGHT_PIXEL / 2);
     }
 
-    public void showMenu() {
+    public void setGhosts(Ghost ghosts[]) {
+        this.ghosts = ghosts;
+    }
 
+    public void setPacman(Pacman pacman) {
+        this.pacman = pacman;
+    }
+
+    public void setGrid(Grid grid) {
+        this.grid = grid;
     }
 }

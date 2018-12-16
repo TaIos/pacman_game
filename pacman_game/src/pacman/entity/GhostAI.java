@@ -30,8 +30,6 @@ public class GhostAI extends Ghost {
         dx = path.peek().getX();
         dy = path.peek().getY();
 
-        System.out.println("O my way to (" + dx + "," + dy + ") from (" + x + "," + y + ")");
-
         // moving vertically
         if (y == dy) {
             if (dx - x > 0)
@@ -177,11 +175,8 @@ public class GhostAI extends Ghost {
             if (best.getValue() == GHS_MARK)
                 break;
         }
-        for (int i = 0; i < GHOST_AI_PATH_LEN && !res.empty(); i++) {
-            Position p = res.pop();
-            System.out.println(p.getX() + ", " + p.getY());
-            path.add(p);
-        }
+        for (int i = 0; i < GHOST_AI_PATH_LEN + 1 && !res.empty(); i++)
+            path.add(res.pop());
     }
 
 }
