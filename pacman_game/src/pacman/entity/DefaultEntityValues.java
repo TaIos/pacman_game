@@ -7,7 +7,7 @@ public interface DefaultEntityValues {
     int DEFAULT_PACMAN_SPEED = 2; // valid values are 1, 2, 4, 8, 16, 32
     int DEFAULT_GHOST_SPEED = 2; // valid values are 1, 2, 4, 8, 16, 32
     int DEFAULT_SPEED = 2; // valid values are 1, 2, 4, 8, 16, 32
-    int RND_MOVE = 9; // higher number lowers the chance of random ghost moves
+    int RND_MOVE = 8; // higher number lowers the chance of random ghost moves
     int PACM_X = 0;
     int PACM_Y = 0;
     int GHOST_AI_PATH_LEN = 1;

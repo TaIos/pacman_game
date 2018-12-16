@@ -185,25 +185,32 @@ public class Game implements DefaultGameValues, KeyListener {
     }
 
     private void initGhosts() {
-        if (DEFAULT_GHOST_CNT != 4)
-            throw new Error("Ghost count is not equal to 4");
+        if (DEFAULT_GHOST_CNT != 6)
+            throw new Error("Ghost count is not equal to 6");
 
         int blkSIze = grid.getBlockSize();
 
         ghosts = new Ghost[DEFAULT_GHOST_CNT];
 
         ghosts[0] = new Ghost("ghost_policeman_right.png");
-        ghosts[0].setPosition(new Position(9 * blkSIze, 7 * blkSIze));
+        ghosts[0].setPosition(new Position(10 * blkSIze, 5 * blkSIze));
 
         ghosts[1] = new Ghost("ghost_princess_right.png");
-        ghosts[1].setPosition(new Position(11 * blkSIze, 7 * blkSIze));
+        ghosts[1].setPosition(new Position(10 * blkSIze, 3 * blkSIze));
 
         ghosts[2] = new Ghost("ghost_soldier_right.png");
-        ghosts[2].setPosition(new Position(13 * blkSIze, 7 * blkSIze));
+        ghosts[2].setPosition(new Position(12 * blkSIze, 5 * blkSIze));
 
-        //ghosts[3] = new GhostAI("ghost_blue_right.png", grid.getData());
-        ghosts[3] = new GhostAI("vagner.png", grid, pacman.getPosition());
-        ghosts[3].setPosition(new Position(14 * blkSIze, 14 * blkSIze));
+        ghosts[3] = new Ghost("ghost_viking_right.png");
+        ghosts[3].setPosition(new Position(12 * blkSIze, 3 * blkSIze));
+
+        ghosts[4] = new Ghost("ghost_pirate_right.png");
+        ghosts[4].setPosition(new Position(11 * blkSIze, 4 * blkSIze));
+
+
+        ghosts[5] = new GhostAI("ghost_blue_right.png", grid, pacman.getPosition());
+        //ghosts[5] = new GhostAI("vagner.png", grid, pacman.getPosition());
+        ghosts[5].setPosition(new Position(13 * blkSIze, 13 * blkSIze));
     }
 
     private void initFlags() {

@@ -143,6 +143,8 @@ public class GhostAI extends Ghost {
 
         while (true) {
             Position p = res.peek();
+            if (p == null)
+                break;
             dx = p.getX();
             dy = p.getY();
             x = dx / blkSize;
@@ -172,7 +174,7 @@ public class GhostAI extends Ghost {
             }
 
             res.push(best.getKey());
-            if (best.getValue() == GHS_MARK)
+            if (best.getValue() == GHS_MARK || res.empty())
                 break;
         }
         for (int i = 0; i < GHOST_AI_PATH_LEN + 1 && !res.empty(); i++)
